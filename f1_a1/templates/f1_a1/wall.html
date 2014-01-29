@@ -1,0 +1,29 @@
+{% load staticfiles %}
+
+<html>
+</head>
+<title>2</title>
+<link rel="stylesheet" type="text/css" href="{% static "css/main.css" %} " />
+</head>
+
+<body>
+
+	{% include "commonHeader.html" %}
+
+{% for post in posts %}
+
+<p>
+	{{post.text}}
+</p>
+{% endfor %}
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'f1_a1:wallpost' %}" method="post">
+{% csrf_token %}
+<input type="text" name="text">
+<input type="submit" value="Post" />
+</form>
+
+</body>
+</html>

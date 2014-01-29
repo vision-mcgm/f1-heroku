@@ -1,0 +1,36 @@
+{% load staticfiles %}
+
+<html>
+</head>
+<title>profile</title>
+<link rel="stylesheet" type="text/css" href="{% static "css/main.css" %} " />
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="{% static "js/fly.js" %}"></script>
+</head>
+
+<body>
+
+	{% include "commonHeader.html" %}
+
+<div class="box">
+	Profile: {{ person.handle }}
+	</div>
+
+
+
+	<script>
+	fixDiv();
+	//$.get('/message/', {}, function(data){
+              // alert(data);
+           //});
+
+	</script>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+{% include "commonFooter.html" %}
+
+
+
+</body>
+</html>

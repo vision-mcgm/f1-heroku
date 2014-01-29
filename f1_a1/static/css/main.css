@@ -1,0 +1,58 @@
+@import url("http://fonts.googleapis.com/css?family=Fenix");
+
+body {background-image:url("/static/im/bg1.jpg");}
+
+body
+{
+	margin:20px;
+    /* font-family:'Jellyka';*/
+   font-family: 'Fenix', serif;
+    font-size:20;
+
+/*text-shadow: 2px 2px #aaaaaa;*/
+
+}
+
+
+/* Divs by class */
+
+
+div.box{
+	border:0px solid black;
+	margin:10px;
+	padding:20px;
+	background-color: rgba(255, 255, 255, 0.5);
+
+}
+
+/* Divs by ID */
+
+#bottomBox{
+	border:1px solid black;
+	margin:10px;
+	padding:20px;
+	background-color: rgba(255, 255, 255, 0.3);
+	position:absolute;
+	bottom:10px;
+}
+a{text-decoration:none;}
+
+a:link    {color:green;}
+a:visited {color:green;}
+a:hover   {color:red;}
+a:active  {color:yellow;} 
+
+/* Fonts */
+
+@font-face {
+    font-family: 'Jellyka';
+    src: url('/static/fonts/Jellyka_Estrya_Handwriting.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'EasyRider';
+    src: url('/static/fonts/Easy_Rider.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}

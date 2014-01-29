@@ -1,0 +1,22 @@
+body {background-image:url("im/bg1.jpg");}
+
+body
+{
+    font-family:'Jellyka';
+    font-size:80;
+
+text-shadow: 2px 2px #aaaaaa;
+
+}
+
+/* Fonts */
+
+@font-face {
+    font-family: 'Jellyka';
+    src: url('/static/fonts/Jellyka_Estrya_Handwriting.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
