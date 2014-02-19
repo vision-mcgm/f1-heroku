@@ -1,0 +1,152 @@
+@import url("http://fonts.googleapis.com/css?family=Fenix");
+@import url("http://fonts.googleapis.com/css?family=IM+Fell+Double+Pica");
+body
+{
+	background-image:url("/static/im/bg1.jpg");
+    /* font-family:'Jellyka';*/
+   font-family: 'Fenix', serif;
+    font-size:20;
+
+/*text-shadow: 2px 2px #aaaaaa;*/
+
+}
+
+/*text-shadow: 2px 2px #aaaaaa;*/
+
+
+/*Divs*/
+
+div.box{
+	border:0px solid black;
+	margin:10px;
+	padding:10px;
+	background-color: rgba(255, 255, 255, 0.5);
+}
+
+div.box-top{
+	border:0px solid black;
+	margin:10px;
+	padding:10px;
+	background-color: rgba(255, 255, 255, 0.5);
+	text-align:right;
+}
+div.convoBox{
+	border:1px solid green;
+	overflow-y:scroll;
+	border:1px solid black;
+	position:relative;
+	top:1px;
+	margin:5px;
+}
+
+div.convoShelf{
+	border:1px solid red;
+	padding:0;
+}
+
+div.box-convo{
+	border:0px solid black;
+	background-color: rgba(255, 255, 255, 0.5);
+}
+div.box-column{
+	border:0px solid green;
+}
+
+div.box-message{
+	border:0px solid black;
+	width:200px;
+	padding:10px;
+
+	
+}
+div.floatmsg{
+	border:1px solid gray;
+	width:200px;
+	margin:0px;	
+	padding:0px;
+	position:relative;
+	/*text-align:justify;
+	text-justify:inter-word;*/
+}
+div.floatreplyOLD{
+	border:1px solid gray;
+	width:200px;
+	position:absolute;
+	margin:0px;	
+}
+
+#convoHolder{
+	overflow-y:scroll;
+	border:1px solid black;
+	position:relative;
+	top:1px;
+}
+
+
+/*Misc*/
+
+/*Spans*/
+
+
+
+span.widget{
+	font-family: 'IM Fell Double Pica', serif;
+}
+
+/*Links*/
+
+a{text-decoration:none;}
+
+a:link    {color:green;}
+a:visited {color:green;}
+a:hover   {color:red;}
+a:active  {color:yellow;} 
+
+a.replylink{
+	font-size:10;
+}
+a.submitlink{
+	font-size:10;
+}
+a.converselink{
+	font-size:10;
+}
+a.replylink:hover{
+	color:red;
+	cursor:pointer;
+}
+
+table{
+	font-family: 'Fenix', serif;
+    font-size:20;
+}
+
+/*Form elements*/
+
+
+
+input, textarea {   
+    padding: 2px;  
+    border: solid 1px #E5E5E5;  
+    outline: 0;  
+  	height:20px;
+    width: 200px;  
+    background: #FFFFFF;  
+    } 
+
+.floatmsg input{
+font-family: 'Fenix', serif;
+background-color: transparent;
+}
+
+
+.button{
+	background:#F99157;
+	font-family: 'Fenix', serif;
+	width:100px;
+}
+
+input:hover, textarea:hover,  
+input:focus, textarea:focus {   
+    border-color: #C9C9C9;   
+    }  

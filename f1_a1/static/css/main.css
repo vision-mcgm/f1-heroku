@@ -1,10 +1,18 @@
 @import url("http://fonts.googleapis.com/css?family=Fenix");
 
+* {
+	margin: 0;
+}
+
+html, body {
+	height: 100%;
+}
+
 body {background-image:url("/static/im/bg1.jpg");}
 
 body
 {
-	margin:20px;
+	
     /* font-family:'Jellyka';*/
    font-family: 'Fenix', serif;
     font-size:20;
@@ -19,21 +27,31 @@ body
 
 div.box{
 	border:0px solid black;
-	margin:10px;
-	padding:20px;
+	
+	padding:10px;
 	background-color: rgba(255, 255, 255, 0.5);
+	
+
+}
+div.box-top{
+	border:0px solid black;
+	margin:10px;
+	padding:10px;
+	background-color: rgba(255, 255, 255, 0.5);
+	
+
+	text-align:right;
 
 }
 
 /* Divs by ID */
 
-#bottomBox{
-	border:1px solid black;
-	margin:10px;
-	padding:20px;
-	background-color: rgba(255, 255, 255, 0.3);
-	position:absolute;
-	bottom:10px;
+div.box-bottom{
+	border:0px solid black;
+	
+	padding:10px;
+	background-color: rgba(255, 255, 255, 0.5);
+	
 }
 a{text-decoration:none;}
 
@@ -55,4 +73,17 @@ a:active  {color:yellow;}
     src: url('/static/fonts/Easy_Rider.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
+
+/* Sticky footer */
+
+.wrapper {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -155px; /* the bottom margin is the negative value of the footer's height */
+}
+.footer, .push {
+	height: 155px; /* .push must be the same height as .footer */
+}
+
 }
