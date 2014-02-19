@@ -40,7 +40,7 @@ def wallpost(request):
 def welcome(request):
 	template = loader.get_template('f1_a1/welcome.html')
 	context = RequestContext(request, {})
-	return HttpResponse(template.render(context))
+	return HttpResponse('wwwwWELCOME')
 
 
 def home(request):
