@@ -24,5 +24,6 @@ urlpatterns = patterns('',
    url(r'^welcome$', 'f1_a1.views.welcome',name='welcome'),
  #   #Any
   url(r'', 'f1_a1.views.welcome'),
+   url(r'^login$', 'f1_a1.views.login',name='login'),
    url(r'^logout/', 'f1_a1.views.logout_view',name='logout'),
 )
