@@ -1,0 +1,31 @@
+{% load staticfiles %}
+    <html>
+        <head>
+            <link rel="stylesheet" type="text/css" href="{% static "css/layout.css" %} " />
+            <link rel="stylesheet" type="text/css" href="{% static "css/main2.css" %} " />
+        </head>
+        <body>
+            <div class="wrapper">
+                <p>Your website content here.</p>
+
+                <div class="box-top">
+	Logged in as {{ user.username }}
+<a href="{% url 'logout' %}">Log out</a>
+</div>
+
+
+{% block central %}
+
+
+{% endblock %}
+
+                <div style="margin:10px">
+Cras nisi mauris, aliquet sed magna nec, ultrices pharetra dolor. Curabitur feugiat malesuada pulvinar. Duis faucibus cursus sem et porttitor. Proin tempor nisl sit amet ullamcorper adipiscing. Nam bibendum ullamcorper metus nec pharetra. Nulla varius elit ut arcu vulputate luctus. Curabitur laoreet aliquam dui dapibus dictum. Donec nec vulputate orci. Vivamus quis consequat lorem. Mauris a blandit nunc, ac accumsan nunc. Morbi ac nisl nisi. Cras eu urna dolor. Nulla a sapien eget mi posuere consequat a et augue. Morbi pharetra interdum velit fermentum rhoncus. Maecenas quis lacus posuere, adipiscing leo sed, scelerisque turpis.
+</div>
+                <div class="push"></div>
+            </div>
+            <div class="footer">
+                <p>Copyright (c) 2008</p>
+            </div>
+        </body>
+    </html>

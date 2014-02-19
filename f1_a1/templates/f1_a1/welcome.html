@@ -1,29 +1,39 @@
+{% extends "base.html" %}
 {% load staticfiles %}
 
-<html>
-</head>
-<title>2</title>
-<link rel="stylesheet" type="text/css" href="{% static "css/main.css" %} " />
-<META HTTP-EQUIV="Expires" CONTENT="-1">
-	<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
-</head>
+{% block head %}
+<title>
+Welcome
+</title>
+<script src="{% static "js/welcome.js" %}"></script>
 
-<body>
+{% endblock %}
 
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% block central %}
+<div class="box">
+<p>Please log in:</p>
 
-<p>Please log gin:</p>
-
-<form action="{% url 'home' %}" method="post">
+<form action="{% url 'login' %}" method="post">
+<table>
 {% csrf_token %}
-<input type="text" name="username">
-<input type="text" name="password">
-<input type="submit" value="Post" />
+<tr><td align="right">Handle:</td><td><input type="text" name="handle" class="username"></td></tr>
+<tr><td align="right">Password:</td><td><input type="password" name="password"></td></tr>
+<tr><td align="right"></td><td><input class="button" type="submit" value="Log in" /></td></tr>
 </form>
+</table>
 
-<head>
-	<META HTTP-EQUIV="Expires" CONTENT="-1">
-	<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
-	</head>
-</body>
-</html>
+<p>Or you can sign up:</p>
+
+<form action="{% url 'join' %}" method="post">
+<table>
+{% csrf_token %}
+<tr><td align="right">Handle:</td><td><input type="text" name="handle"></td></tr>
+<tr><td align="right">Email:</td><td><input type="text" name="email"></td></tr>
+<tr><td align="right">Name:</td><td><input type="text" name="name"></td></tr>
+<tr><td align="right">Password:</td><td><input type="password" name="password"></td></tr>
+<tr><td align="right"></td><td><input class="button" type="submit" value="Join" /></td></tr>
+</form>
+</table>
+
+</div>
+{% endblock %}

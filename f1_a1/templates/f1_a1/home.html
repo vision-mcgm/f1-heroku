@@ -1,20 +1,8 @@
-{% load staticfiles %}
+{% extends "base.html" %}
 
-<html>
-</head>
-<title>'s profile</title>
-<link rel="stylesheet" type="text/css" href="{% static "css/main.css" %} " />
-</head>
+{% block central %}
+<div class="box">
+Home- you are logged in
 
-<body>
-
-
-
-
-
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-
-
-
-</body>
-</html>
+</div>
+{% endblock %}

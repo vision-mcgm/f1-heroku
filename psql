@@ -1,0 +1,12 @@
+=== HEROKU_POSTGRESQL_PINK_URL (DATABASE_URL)
+Plan:        Hobby-dev
+Status:      available
+Connections: 0
+PG Version:  9.3.2
+Created:     2014-01-29 03:39 UTC
+Data Size:   7.4 MB
+Tables:      20
+Rows:        52/10000 (In compliance)
+Fork/Follow: Unsupported
+Rollback:    Unsupported
+

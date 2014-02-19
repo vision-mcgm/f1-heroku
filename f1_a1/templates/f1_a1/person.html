@@ -1,36 +1,47 @@
+{% extends "base.html" %}
 {% load staticfiles %}
 
-<html>
-</head>
-<title>profile</title>
-<link rel="stylesheet" type="text/css" href="{% static "css/main.css" %} " />
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="{% static "js/fly.js" %}"></script>
-</head>
+{% block head %}
+<title>
+Person
+</title>
+<script src="{% static "js/dust-full-0.3.0.js" %}"></script>
+<script src="{% static "js/dust_person.js" %}" ></script>
+<script src="{% static "js/convo.js" %}"></script>
+<script src="{% static "js/convoHTML.js" %}"></script>
 
-<body>
 
-	{% include "commonHeader.html" %}
+{% endblock %}
 
+{% block central %}
 <div class="box">
-	Profile: {{ person.handle }}
-	</div>
+ <p>
+ 	Profile
+ </p>
+ <p>
+ 	<table>
+<tr><td align="right">Handle:</td><td>{{person.handle}}</td></tr>
+<tr><td align="right">Email:</td><td>{{person.handle}}</td></tr>
+<tr><td align="right">Name:</td><td>{{person.handle}}</td></tr>
+<tr><td align="right"></td><td></td></tr>
+
+</table>
+
+</div>
 
 
 
-	<script>
-	fixDiv();
-	//$.get('/message/', {}, function(data){
-              // alert(data);
-           //});
 
-	</script>
+<div class="box-convo">
 
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-{% include "commonFooter.html" %}
+<p>Conversations</p>
+<div id="convoShelf">
+</div>
+</div>
+<input class="button" type="submit" value="New conversation" id="startConv"/>
 
 
 
-</body>
-</html>
+
+{% endblock %}
