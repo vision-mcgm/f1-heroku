@@ -12,3 +12,7 @@ def welcome(request):
 	template = loader.get_template('f1_a1/welcome.html')
 	context = RequestContext(request, {})
 	return HttpResponse(template.render(context))
+
+def logout_view(request):
+	logout(request)
+	return HttpResponse("Logged out")
