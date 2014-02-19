@@ -35,13 +35,16 @@ class Person(models.Model):
     handle=models.CharField(max_length=1000)
     name=models.CharField(max_length=1000)
     email=models.EmailField(max_length=128)
+    uid=models.IntegerField(default=0)
+   # uid2=models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.name
 
 
 class Conversation(models.Model):
-    text=models.CharField(max_length=1000)
+    uid=models.IntegerField()
+   # text=models.CharField(max_length=1000)
     convoID=models.CharField(max_length=100, blank=True, unique=True, default=uuid4)
     #So that uuid is reevaluated every time
 
@@ -54,10 +57,15 @@ class ProtoConversation(models.Model):
 
 class Message(models.Model):
     #Author numerical ID
-    author=models.IntegerField(default=0)
+    uid=models.IntegerField(default=0)
     text=models.CharField(max_length=1000)
-    pConvo=models.ForeignKey(Conversation)
-   # pMessage=models.ForeignKey(Message)
+    handle=models.CharField(max_length=1000)
+    name=models.CharField(max_length=1000)
+    test=models.CharField(max_length=1000,default=0)
+  # pConvo=models.ForeignKey(Conversation,default=1)
+   # pMessage=models.ForeignKey('Message',null=True, blank=True) #Unused for now
+    parentID=models.IntegerField(default=0)
+    convoID=models.IntegerField(default=0)
 
 
 
@@ -71,7 +79,4 @@ class Group(models.Model):
     pass
 
 class Event(models.Model):
-    pass
-
-class Conversation(models.Model):
     pass
