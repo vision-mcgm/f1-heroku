@@ -8,9 +8,7 @@ import logging
 
 
 
-
 def welcome(request):
 	template = loader.get_template('f1_a1/welcome.html')
 	context = RequestContext(request, {})
-	return HttpResponse('wwwwWELCOME')
-
+	return HttpResponse(template.render(context))

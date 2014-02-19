@@ -21,6 +21,7 @@ urlpatterns = patterns('',
  # url(r'^logout/', 'f1_a1.views.logout_view',name='logout'),
  # url(r'^person/(\w*)$', 'f1_a1.views.person', name='person'),
  # url(r'^message/$', 'f1_a1.views.message', name='message'),
+   url(r'^welcome$', 'f1_a1.views.welcome',name='welcome'),
  #   #Any
   url(r'', 'f1_a1.views.welcome'),
 )
