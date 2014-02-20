@@ -19,26 +19,14 @@ var msgWidth=210;
 var convoHolderYBuffer=10;
 var msgBorder=1;
 
-function reInitVars(){
-xcount=10;
-ycount=10;
-dy=10;
-dx=10;
-startx=10;
-starty=7;
-hConvoAddingTo;
-maxRow=0;
-maxCol=0;
-maxHeightsByDepth=new Array();
-maxHeightsByDepth[0]=0;
-maxHeightsByDepth[1]=0;
-maxHeightsByDepth[2]=0;
-maxHeightsByDepth[3]=0;
-maxHeightsByDepth[4]=0;
-barY=0;
-msgWidth=210;
-convoHolderYBuffer=10;
-}
+//Complex vars
+var dictNodes=new Object();
+var dictConvoRoots=new Object();
+var dictConvoBoxes=new Object();
+var nodeTree;
+var boxToDrawReply;
+var handleToDrawReply;
+var nodeToDrawReply;
 
 
 //DocumentReady handlers
@@ -57,7 +45,7 @@ $('#startConv').click(addConvo);
 //Handlers:
  //$(document.body).on( "click", '.test', reply);
  //$(document.body).on( "click", '.bPostNewConvo', postNewConvo); //Old?
-$(document.body).on( "click", '.replylink', prepReply);
+$(document.body).on( "click", '.replylink', prepReply2);
 $(document.body).on( "click", '.submitlink', sendReply);
 $(document.body).on( "click", '.converselink', sendConverse);
 //$(document.body).on( "click", '.converselink', startNewConvo);
@@ -79,6 +67,25 @@ function prepReply(event){
   drawReplyPrep(hConvo,id,x,y);
 }
 
+function prepReply2(event){
+  //Append reply to the node tree
+  say('reply prepped');
+  id=$(event.target).closest('.floatmsg').data('id');
+  thisNode=dictNodes[id];
+  var newNode=new Object();
+  //newNode.text='harrr';
+  newNode.handle=gHandle;
+  newNode.name=gName;
+  newNode.id=-1; //minus 1 if it's a reply
+  newNode.replyTo=id;
+  newNode.children=[];
+  thisNode.children.push(newNode);
+  thisConvoRoot=dictConvoRoots[id];
+  thisConvoHandle=$(event.target).closest('.convoBox');
+  thisConvoHandle.empty();
+  drawConvoNode(thisConvoRoot,thisConvoHandle);
+
+}
 
 
 function addConvo(){
@@ -133,14 +140,17 @@ while (msgList.length){
       //Root node
       msgTree.text=msg.text;
       msgTree.name=msg.name;
+      msgTree.handle=msg.handle;
       msgTree.id=msg.id;
       msgTree.children=[];
       msgList.splice(i,1);//Remove element
+      dictNodes[msg.id]=msgTree;
+      dictConvoRoots[msg.id]=msgTree;
 
     }
     else{
       if (typeof msgTree.children != 'undefined'){
-    success=tryToAdd(msgList[i],msgTree);
+    success=tryToAdd(msgList[i],msgTree,msgTree);
     if (success){
       msgList.splice(i,1);
     }
@@ -152,43 +162,60 @@ console.log(String(iterations)+' iterations');
 return msgTree;
 }
 
-function tryToAdd(data,node){
+function tryToAdd(data,node,root){
   //Tries to add a node to a tree - RECURSIVE
 var success=0;
 if (node.id==data.parent){
   var newNode=new Object();
       newNode.text=msg.text;
       newNode.name=msg.name;
+      newNode.handle=msg.handle;
       newNode.id=msg.id;
       newNode.children=[];
   node.children.push(newNode);
+  dictNodes[msg.id]=newNode;
+  dictConvoRoots[msg.id]=root;
   return 1;
 }
 for (var i=0;i<node.children.length;i++){
-  success=tryToAdd(data,node.children[i]);
+  success=tryToAdd(data,node.children[i],root);
   if (success) return 1;
 }
 }
 
 //HL page drawing
 
-function drawConvo(convo)
+function drawConvoJSON(convo)
 {
 
   hConvoAddingTo=$(convoBox(convo.convoID));
   $('#convoShelf').append(hConvoAddingTo);
   convoTree=jsonMsgListToTree(convo.msgs);
-  maxRow=0;
-  barY=0;
+
 
   //MESSY - need to init levels better
+  maxRow=0;
+  barY=0;
   maxHeightsByDepth[0]=0;
-maxHeightsByDepth[1]=0;
-maxHeightsByDepth[2]=0;
-maxHeightsByDepth[3]=0;
-maxHeightsByDepth[4]=0;
+  maxHeightsByDepth[1]=0;
+  maxHeightsByDepth[2]=0;
+  maxHeightsByDepth[3]=0;
+  maxHeightsByDepth[4]=0;
   console.log('CONVO START');
   drawMsgsTree(convoTree); 
+}
+
+function drawConvoNode(node,convoHandle){
+  //MESSY - need to init levels better
+  hConvoAddingTo=convoHandle;
+  maxRow=0;
+  barY=0;
+  maxHeightsByDepth[0]=0;
+  maxHeightsByDepth[1]=0;
+  maxHeightsByDepth[2]=0;
+  maxHeightsByDepth[3]=0;
+  maxHeightsByDepth[4]=0;
+  drawMsgsTree(node); 
 }
 
 function drawMsgs(data){
@@ -203,7 +230,7 @@ function drawConvos(treeList){
   //Draws a list of convos
 
   for (var c=0;c<treeList.length;c++){
-    drawConvo(treeList[c]);
+    drawConvoJSON(treeList[c]);
   }
 }
 
@@ -237,17 +264,19 @@ function drawMsgsRec2(node,x,y,depth){
   //Draw
 
   console.log('y '+String(y)+' yfc '+String(yFirstChild) +' bary '+String(barY));
-
   if (!node.children.length){
     //We are at a leaf
     var drawx=startx+depth*msgWidth;
     var drawy=barY+dy;
-    var msg=$(floatmsgxy(drawx,drawy,node.id,node.text,node.name));
+    if (node.id==-1){ 
+    var msg=$(floatreplyxy(drawx,drawy,node.replyTo,node.name,node.handle));
+    }else{
+    var msg=$(floatmsgxy(drawx,drawy,node.id,node.text,node.name,node.handle));
+  }
     hConvoAddingTo.append(msg);
     var mHeight=msg.height();
     console.log('DRAW-LEAF x '+String(drawx)+' y '+String(drawy)+' t '+node.text+' d '+String(depth)+' h '+String(mHeight));
-    //Adjust bar
-    
+    //Adjust bar  
     var bottom=drawy+mHeight+2*msgBorder;
     console.log('SETBARY from '+String(barY)+' to ' +String(bottom));
     barY=bottom;
@@ -256,23 +285,20 @@ function drawMsgsRec2(node,x,y,depth){
   {//We are at an intermediate node
     var drawx=startx+(depth*msgWidth);
     var drawy=yFirstChild;
-    var msg=$(floatmsgxy(drawx,drawy,node.id,node.text,node.name));
+    var msg=$(floatmsgxy(drawx,drawy,node.id,node.text,node.name,node.handle));
     hConvoAddingTo.append(msg);
     var mHeight=msg.height();
-     console.log('DRAW-INTE x '+String(drawx)+' y '+String(drawy)+' t '+node.text+' d '+String(depth)+' h '+String(mHeight));
-   
+    console.log('DRAW-INTE x '+String(drawx)+' y '+String(drawy)+' t '+node.text+' d '+String(depth)+' h '+String(mHeight)); 
     var bottom=y+mHeight+2*msgBorder;
     //Does the internode overflow the current barY?
     if (bottom>barY){
       console.log('SETBARY from '+String(barY)+' to ' +String(bottom));
-      barY=bottom;
-      
+      barY=bottom;      
     }
   }
   //Adjust height
   //newHeight=callRow+msg.height()+dy;
   console.log('bott '+String(bottom)+' mhbd '+String(maxHeightsByDepth[depth]) +' max '+String(Math.max(maxHeightsByDepth[depth],bottom)));
-
   maxHeightsByDepth[depth]=Math.max(maxHeightsByDepth[depth],barY);
   hConvoAddingTo.height(maxHeightsByDepth[depth]+convoHolderYBuffer);
   //if (hConvoAddingTo.height()>maxHeightsByDepth[depth]){
@@ -281,80 +307,7 @@ function drawMsgsRec2(node,x,y,depth){
   depth=depth-1;
   console.log('RETURN x '+String(x)+' y '+String(y)+' '+String(depth));
   return [drawx,drawy,depth];
-
 }
-
-
-function drawMsgsRec(node,row,col,depth,descend,lastChild){
-  //Takes a JSON node structure, with row and col - recursive function
-  // console.log('called ' + row.toString() + ' '+col.toString());
-
-  //console.log('node l: '+node.length.toString());
- // console.log('starting loop of len '+node.childlength.toString());
- var callRow=row;
- var callCol=col;
- console.log('CALL r '+String(row)+' c '+String(col)+' '+String(depth));
-for (var n=0;n<node.children.length;n++){
-      console.log(n.toString());
-      if (n==0){
-        //First child
-  pos=drawMsgsRec(node.children[n],row,col+200+dx,depth+1,1);
-  var topRow=row;
-      console.log('top '+topRow);
-}else{
-//Following children
-  pos=drawMsgsRec(node.children[n],row,col+200+dx,depth+1,1);
-  // topRow=row;
-}
-  row=pos[0];
-  //if (n>0){
-  col=pos[1];
-  depth=pos[2];
-  var oldrow=row;
-  var oldcol=col;
-//}
-  //maxRow=Math.max(maxRow,pos[1]);
-  //Can optimise by inlining these two lines
-  //hConvoAddingTo.height(maxRow);
-}
-//row=topRow;
-//Turnaround
-
-if (!node.children.length){
-  //If at leaf
-   maxCol=200*depth;
-   var ypos=row;
-}else{
-  //If not at leaf
-  var ypos=topRow;
-}
-var xpos=col;
-//col=maxCol-(200*depth);
-  
-  var msg=$(floatmsgxy(xpos,ypos,node.id,node.text,node.name));
-  hConvoAddingTo.append(msg);
-  console.log('DRAW r '+String(ypos)+' c '+String(xpos)+' t '+node.text+' d '+String(depth)+' h '+String(msg.height()));
-  newHeight=callRow+msg.height()+dy;
-  nextFreeRow=row;
-   if (descend){
-    //If not the first sibling
-    
-  row=newHeight;
-}
-
-// if (descend) row=newHeight;
-  //hConvoAddingTo.height(newHeight);
-  maxHeightsByDepth[depth]=Math.max(maxHeightsByDepth[depth],newHeight);
-  if (hConvoAddingTo.height()<maxHeightsByDepth[depth]){
-  hConvoAddingTo.height(maxHeightsByDepth[depth]);
-}
-  col=col-200-dx;
-  depth=depth-1;
-    console.log('RETURN r '+String(row)+' c '+String(col)+' '+String(depth));
-  return [row,col,depth];
-}
-
-
 
 function drawReplyPrep(hConvo,id,x,y)
 {//REMEMBER the reply floatmsg contains the ID of the parent.
@@ -388,7 +341,7 @@ function sendReply(event){
   console.log('new convo');
   msg=$(event.target).closest('.floatmsg');
   convoID=$(event.target).closest('.convoBox').data('id');
-  text=msg.find('.text').val();
+  text=msg.find('.replyText').val();
   msgID=msg.data('id');
   console.log('id '+msgID);
   say(text);
@@ -399,10 +352,14 @@ function sendReply(event){
     convoID:convoID },
     dataType: "html",
     type: "GET",
-    success:function(data){say(data);},
+    success:sendReplySuccess,
     error:function(data){say('no');}
 
 });
+}
+
+function sendReplySuccess(data){
+location.reload();
 }
 
 function sendConverse(event){
@@ -444,7 +401,8 @@ function aGetMessagesByUID(){
   $.ajax({
     url:"/getMessagesByUID",
     data: {csrfmiddlewaretoken:getCookie('csrftoken'),
-      },
+      handle:gCurrentPersonHandle,
+      personUID:gCurrentPersonUID},
     dataType: "json",
     type: "GET",
     success:function(data){
@@ -475,7 +433,8 @@ function getCookie(name) {
     }
     return cookieValue;
 }
-  
+
+
 
 
 

@@ -4,6 +4,7 @@
             <link rel="stylesheet" type="text/css" href="{% static "css/main2.css" %} " />  
         	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         	<script src="{% static "js/all.js" %}"></script>
+            <script type="text/javascript">var gName="{{person.name}}";var gHandle="{{user.username}}";</script>
         	
         	{% block head %}
         	<title>
@@ -16,10 +17,14 @@
         <body>
          
         <div class="box-top">
-		Logged in as <a href="/person/{{user.username}}">{{ user.username }}</a>:
-        <a href="/person/{{user.username}}">{{ person.name }}</a>
+            <table width="100%" border="0"><tr><td align="left">
+             <a href="/groups">Groups</a>
+            </td><td align="right">
+		Logged in as <a href="/person/{{user.username}}">{{ user.username }}</a> <span class="widget"> ~ </span>
+        <a href="/person/{{user.username}}">{{ me.name }}</a>
 		<span class="widget"> ~ </span>
 		<a href="{% url 'logout' %}">Log out</a>
+    </td></tr></table>
 		</div>
 
 		{% block central %}

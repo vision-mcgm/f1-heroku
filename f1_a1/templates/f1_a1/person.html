@@ -9,6 +9,8 @@ Person
 <script src="{% static "js/dust_person.js" %}" ></script>
 <script src="{% static "js/convo.js" %}"></script>
 <script src="{% static "js/convoHTML.js" %}"></script>
+<script type="text/javascript">var gName="{{me.name}}";var gHandle="{{user.username}}"; var gCurrentPersonHandle="{{person.handle}}";
+	var gCurrentPersonUID="{{person.uid}}";</script>
 
 
 {% endblock %}
@@ -33,7 +35,6 @@ Person
 
 
 <div class="box-convo">
-
 
 <p>Conversations</p>
 <div id="convoShelf">

@@ -85,40 +85,29 @@ def join(request):
    
 
 def person(request,id):
-	if Person.objects.filter(handle=id).count():
-		person=Person.objects.get(handle=id)
-		template = loader.get_template('f1_a1/person.html')
-		context = RequestContext(request, {'person':person})
-		return HttpResponse(template.render(context))
+	if request.user.is_authenticated():
+		me=Person.objects.get(uid=request.user.id)
+		if Person.objects.filter(handle=id).count():
+			person=Person.objects.get(handle=id)
+			template = loader.get_template('f1_a1/person.html')
+			context = RequestContext(request, {'person':person,'me':me})
+			return HttpResponse(template.render(context))
+		else:
+			return HttpResponse('No person by that name: '+id)
 	else:
-		return HttpResponse('No person by that name: '+id)
+		return HttpResponse('Not authenticated.')
 
 def message(request):
 	return HttpResponse('This is a message!')
 
 #AJAX GET requests
 
-def getMessagesByUID_old(request):
-	#GET request by Ajax
-	if request.user.is_authenticated():
-		uid=request.user.id
-		#Get convos
-		convos=Conversation.objects.filter(uid=uid)	
-		jConvos=[]
-		for c in convos:
-			messages=Message.objects.filter(pConvo=c)
-			jMsgs=[]
-			for m in messages:
-				jMsgs.append({'text':m.text,'name':m.name,'id':m.id})
-			jConvos.append(jMsgs)
-		return HttpResponse(dumps(jConvos))
-	else:
-		return HttpResponse('This page has no messages.')
+
 
 def getMessagesByUID(request):
 	#GET request by Ajax
 	if request.user.is_authenticated():
-		uid=request.user.id
+		uid=request.GET['personUID']
 		#Get convos
 		convos=Conversation.objects.filter(uid=uid)	
 		jConvos=[]
@@ -127,7 +116,8 @@ def getMessagesByUID(request):
 			log.error(str(c.id)+'Posting message')
 			jMsgs=[]
 			for m in messages:
-				jMsgs.append({'text':m.text,'name':m.name,'id':m.id,'parent':m.parentID})
+				jMsgs.append({'text':m.text,'name':m.name,'id':m.id,
+					'handle':m.handle,'parent':m.parentID})
 			jConvos.append({'msgs':jMsgs,'convoID':c.id})
 		return HttpResponse(dumps(jConvos))
 	else:

@@ -60,7 +60,7 @@ div.box-message{
 	
 }
 div.floatmsg{
-	border:1px solid gray;
+	border:0px solid gray;
 	width:200px;
 	margin:0px;	
 	padding:0px;
@@ -133,6 +133,12 @@ input, textarea {
     width: 200px;  
     background: #FFFFFF;  
     } 
+
+.replyText{
+	font-family: 'Fenix', serif;
+	background-color: transparent;
+	font-size:20;
+}
 
 .floatmsg input{
 font-family: 'Fenix', serif;
