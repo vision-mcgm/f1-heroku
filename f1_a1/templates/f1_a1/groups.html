@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block head %}
+<title>
+Groups
+</title>
+<script src="{% static "js/groups.js" %}"></script>
+
+{% endblock %}
+
+{% block central %}
+
+<div class="box">
+<p>Groups</p>
+<table width="100%" border="1">
+	<tr><td  width="25%">
+		<div  border="1" class="leftGroupList">
+Group list
+		</div>
+	</td>
+
+	<td> 
+Members list
+	</td>
+	<td width="30%">
+Check list
+	</td>
+</tr>
+</table>
+
+</div>
+
+
+{% endblock %}

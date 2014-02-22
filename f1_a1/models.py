@@ -67,7 +67,11 @@ class Message(models.Model):
     parentID=models.IntegerField(default=0)
     convoID=models.IntegerField(default=0)
 
-
+class GroupNode(models.Model):
+    uid=models.IntegerField(default=0)
+    person=models.CharField(max_length=1000)
+    parentID=models.IntegerField(default=0)
+    convoID=models.IntegerField(default=0)
 
 class Audience(models.Model):
     pass
@@ -75,8 +79,7 @@ class Audience(models.Model):
 class Closure(models.Model):
     pass
 
-class Group(models.Model):
-    pass
+
 
 class Event(models.Model):
     pass

@@ -12,7 +12,6 @@ urlpatterns = patterns('',
 	url(r'^/wall$', views.wall, name='wall'),
 	url(r'^/person$', views.person, name='person'),
    # url(r'^(?P<poll_id>\d+)/vote/$', views.vote, name='vote'),
-  	url(r'^/vote/$', views.vote, name='vote'),
    #Wall post
  	url(r'^wallpost$', views.wallpost, name='wallpost'),
    #All

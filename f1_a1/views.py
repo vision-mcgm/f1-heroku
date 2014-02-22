@@ -3,7 +3,7 @@ from django.contrib.auth import login as auth_login
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.template import RequestContext, loader,Context
-from f1_a1.models import Poll,WallPost,Person,Message,Conversation
+from f1_a1.models import Poll,WallPost,Person,Message,Conversation,GroupNode
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from json import dumps
@@ -20,11 +20,18 @@ def index(request):
         'latest_poll_list': latest_poll_list,
     })
     return HttpResponse(template.render(context))
-# Create your views here.
 
+def post(request):
+	if request.user.is_authenticated():
+		me=Person.objects.get(uid=request.user.id)
 
-def vote(request):
-	return HttpResponse("You're voting on poll")
+		template = loader.get_template('f1_a1/post.html')
+		context = RequestContext(request, {'me':me})
+		return HttpResponse(template.render(context))
+
+	else:
+		return HttpResponse('Not authenticated.')
+
 
 def wall(request):
 	if request.user.is_authenticated():
@@ -43,9 +50,16 @@ def wallpost(request):
 	wp.save()
 	return HttpResponseRedirect(reverse('f1_a1:wall', ))
 
+def groups(request):
+	me=Person.objects.get(uid=request.user.id)
+	template = loader.get_template('f1_a1/groups.html')
+	context = RequestContext(request, {'me':me})
+	return HttpResponse(template.render(context))
+
 def welcome(request):
+	me=Person.objects.get(uid=request.user.id)
 	template = loader.get_template('f1_a1/welcome.html')
-	context = RequestContext(request, {})
+	context = RequestContext(request, {'me':me})
 	return HttpResponse(template.render(context))
 
 
@@ -102,6 +116,16 @@ def message(request):
 
 #AJAX GET requests
 
+def getGroups(request):
+	if request.user.is_authenticated():
+		#Get convos
+		groups=GroupNode.objects.filter(uid=request.user.id)	
+		jGroups=[]
+		for g in groups:
+
+			jConvos.append(g)
+		#return HttpResponse(dumps(jGroups))
+		return HttpResponse(dumps('grouplist'))
 
 
 def getMessagesByUID(request):
@@ -194,8 +218,18 @@ def replyTo(request,convoID,parentID):
 #SEC
 #We need to check that the message and the convo go together, to avoid malicious posts.
 
+def aPost(request):
+	log.error('Posting message')
+	if request.user.is_authenticated():
+		text=request.GET['text']
+		uid=request.user.id
+		if len(text):
+			c=Conversation(uid=uid)
+			c.save()
+			replyTo(request,c.id,2)
+		return HttpResponse(c.id)
 
-def post(request,convo):
+def post_old(request,convo):
 	log.error('Posting message')
 	if request.user.is_authenticated():
 		#Fill this in correctly:

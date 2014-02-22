@@ -5,6 +5,7 @@
         	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         	<script src="{% static "js/all.js" %}"></script>
             <script type="text/javascript">var gName="{{person.name}}";var gHandle="{{user.username}}";</script>
+            <script type="text/javascript">var gName="{{me.name}}";</script>
         	
         	{% block head %}
         	<title>
@@ -18,7 +19,9 @@
          
         <div class="box-top">
             <table width="100%" border="0"><tr><td align="left">
-             <a href="/groups">Groups</a>
+            <a href="/groups">Groups</a>
+             <span class="widget"> ~ </span>
+             <a href="/post">Post</a>
             </td><td align="right">
 		Logged in as <a href="/person/{{user.username}}">{{ user.username }}</a> <span class="widget"> ~ </span>
         <a href="/person/{{user.username}}">{{ me.name }}</a>
@@ -29,6 +32,7 @@
 
 		{% block central %}
 		{% endblock %}
+         
          <div class="box" id="info"></div>
 
            

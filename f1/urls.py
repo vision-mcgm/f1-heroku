@@ -14,9 +14,12 @@ urlpatterns = patterns('',
    # url(r'^polls/', include('f1_a1.urls')),url(r'^$', views.welcome, name='welcome'),
   url(r'^admin/', include(admin.site.urls)),
 
+#Page requests
   url(r'^wall/', include('f1_a1.urls', namespace="f1_a1")),
  # url(r'^home/', include('f1_a1.urls', namespace="f1_a1"),name='home'),
  url(r'^home$', 'f1_a1.views.home',name='home'),
+ #url(r'^home$', 'f1_a1.views.ingroups',name='ingroups'),
+ url(r'^groups$', 'f1_a1.views.groups',name='groups'),
  url(r'^login$', 'f1_a1.views.login',name='login'),
  url(r'^join$', 'f1_a1.views.join',name='join'),
  #url(r'^login2$', 'django.contrib.auth.views.login',name='login2'),
@@ -31,6 +34,7 @@ urlpatterns = patterns('',
 #AJAX request handlers
  url(r'^getMessagesByUID$', 'f1_a1.views.getMessagesByUID', name='getMessagesByUID'),
   #url(r'^getMessagesByConvoID$', 'f1_a1.views.getMessagesByConvoID', name='getMessagesByConvoID'),
+ url(r'^getGroups$', 'f1_a1.views.getGroups', name='getGroups'),
 
  
  url(r'^test(\d*)$', 'f1_a1.views.test', name='test'),

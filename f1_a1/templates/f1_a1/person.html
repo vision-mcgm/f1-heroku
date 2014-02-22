@@ -9,7 +9,7 @@ Person
 <script src="{% static "js/dust_person.js" %}" ></script>
 <script src="{% static "js/convo.js" %}"></script>
 <script src="{% static "js/convoHTML.js" %}"></script>
-<script type="text/javascript">var gName="{{me.name}}";var gHandle="{{user.username}}"; var gCurrentPersonHandle="{{person.handle}}";
+<script type="text/javascript">var gHandle="{{user.username}}"; var gCurrentPersonHandle="{{person.handle}}";
 	var gCurrentPersonUID="{{person.uid}}";</script>
 
 
@@ -39,8 +39,9 @@ Person
 <p>Conversations</p>
 <div id="convoShelf">
 </div>
-</div>
 <input class="button" type="submit" value="New conversation" id="startConv"/>
+</div>
+
 
 
 

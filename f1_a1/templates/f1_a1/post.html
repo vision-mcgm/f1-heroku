@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block head %}
+<title>
+Post
+</title>
+<link rel="stylesheet" type="text/css" href="{% static "css/superfish.css" %} " />  
+
+<script src="{% static "js/dust-full-0.3.0.js" %}"></script>
+<script src="{% static "js/dust_person.js" %}" ></script>
+<script src="{% static "js/convoHTML.js" %}"></script>
+<script src="{% static "js/jquery.autosize.js" %}"></script>
+<script src="{% static "js/superfish.js" %}"></script>
+<script src="{% static "js/libraries.js" %}"></script>
+<script type="text/javascript">var gName="{{me.name}}";</script>
+
+
+{% endblock %}
+
+{% block central %}
+<div class="box">
+<div class="centredBox">
+ <p>
+ 	Post new message
+ </p>
+ <table width="100%" border="0" cellspacing="10px">
+ 	<tr>
+ 		<td width="70%">
+ 			<textarea class="replyText" style="height:200px; width:100%;">
+ 			</textarea>
+ 		</td>
+ 		<td valign="bottom" >
+ 			<ul class="sf-menu" id="example">
+ 				<li class="current"> Time
+ 					<ul><li>Instant</li><li>Later</li></ul>
+ 			</ul>
+
+ 		
+ 		
+ 			<ul class="sf-menu" id="example">
+ 				<li class="current"> Outgroup
+ 					<ul><li>All</li></ul>
+ 			</ul>
+ 		
+
+ 			<ul class="sf-menu" id="example">
+ 				<li class="current"> Invitations
+ 					<ul><li>Yes</li><li>No</li></ul>
+ 			</ul>
+ 			
+ 		
+ 			
+ 			<br />
+ 			<input class="button" type="submit" value="Post" id="bPost"/>
+ 		</td>
+ 	</tr>
+ </table>
+
+ 
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+{% endblock %}
