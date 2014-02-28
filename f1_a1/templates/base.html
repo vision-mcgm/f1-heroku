@@ -21,10 +21,16 @@
             <table width="100%" border="0"><tr><td align="left">
             <a href="/groups">Groups</a>
              <span class="widget"> ~ </span>
+             <a href="/news">News</a>
+             <span class="widget"> ~ </span>
              <a href="/post">Post</a>
             </td><td align="right">
 		Logged in as <a href="/person/{{user.username}}">{{ user.username }}</a> <span class="widget"> ~ </span>
         <a href="/person/{{user.username}}">{{ me.name }}</a>
+        <span class="widget"> ~ </span>
+        <a href="/profiles">Profiles</a>
+        <span class="widget"> ~ </span>
+        <a href="/options">Options</a>
 		<span class="widget"> ~ </span>
 		<a href="{% url 'logout' %}">Log out</a>
     </td></tr></table>

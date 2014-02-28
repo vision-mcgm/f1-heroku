@@ -72,6 +72,10 @@ class GroupNode(models.Model):
     person=models.CharField(max_length=1000)
     parentID=models.IntegerField(default=0)
     convoID=models.IntegerField(default=0)
+    realGroup=models.BooleanField(default=False)
+    groupName=models.CharField(max_length=1000,default=0)
+    people=models.CharField(max_length=1000,default=0)
+    convoList=models.CharField(max_length=1000,default='[]')
 
 class Audience(models.Model):
     pass

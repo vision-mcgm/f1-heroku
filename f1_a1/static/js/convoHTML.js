@@ -13,15 +13,19 @@ return text;
 
   //HTML generator functions
 
-function convoBox(id){
 
-return '<div class="convoBox" data-id="'+id+'"></div>';
+function vertLine(x1,y1,x2,y2){
+  console.log('DRAWVERT '+x1+' '+y1+' '+x2+' '+y2);
+  return '<div class="vertLine" style="position: absolute; left:'+x1+'px; top: '+y1+'px; height:'+(y2-y1)+'px;"></div>';
 }
 
-function floatmsg(text,name){
+function horizLine(x1,y1,x2,y2){
+  console.log('DRAWHORIZ '+x1+' '+y1+' '+x2+' '+y2);
+  return '<div class="horizLine" style="position: absolute; left:'+x1+'px; top: '+y1+'px; width:'+(x2-x1)+'px;"></div>';
+}
 
-  return '<div class="floatmsg" style="position: relative; left:40px; top: 3px;"><i>' +name+ '</i> : '+text+'<br />\
-  <a class="replylink">reply</a></div>';
+function convoBox(id){
+return '<div class="convoBox" data-id="'+id+'"></div>';
 }
 
 function floatmsgxy(x,y,id,text,name,handle){
@@ -45,40 +49,3 @@ function floatconversexy(x,y,name){
   <a class="converselink">submit</a></div>';
 }
 
-function newColumn(){
-  return '<div class="box-column">\
-  New column\
-  </div>'
-}
-
-function newColumnTD(){
-  return '<td>' + newMessage() +'  </td>';
-}
-
-function newConvo(){
-  return '<div class="box-convo">\
- <table><tr><td>'+ newConvoMessage() +
-  '<div class="test">\
-  </div>\
-</td></tr></table>\
-  </div>\
-  </div>';
-}
-
-function newMessage(){
-  return '<div class="box-message">A New Message\
-   <input type="text" class="tMsg">\
-  <div class="test">\
-  <input class="button" type="submit" value="Reply" />\
-  </div>\
-  </div>';
-}
-
-function newConvoMessage(){
-  return '<div class="box-message">A New Message\
-   <input type="text" class="tMsg">\
-  <div class="bPostNewConvo">\
-  <input class="button" type="submit" value="Reply" />\
-  </div>\
-  </div>';
-}

@@ -28,6 +28,10 @@ var boxToDrawReply;
 var handleToDrawReply;
 var nodeToDrawReply;
 
+//HACK
+gCurrentPersonHandle='';
+gCurrentPersonUID='';
+
 
 //DocumentReady handlers
 //$(function()
@@ -51,11 +55,33 @@ $(document.body).on( "click", '.converselink', sendConverse);
 //$(document.body).on( "click", '.converselink', startNewConvo);
  var csrf_token = getCookie('csrftoken');
  //$('#box-convo').append(newConvo());
- getStartMessages();
+ 
  $('#convoHolder').css("height", "500px");
 }
 
-//Functions
+//Click handlers
+
+function postConverse(event){
+  console.log('new convo');
+  msg=$(event.target).closest('table').find('textarea');
+  //convoID=$(event.target).closest('.convoBox').data('convoID');
+  text=msg.val();
+  say(text);
+   // msgID=msg.data('id');
+  //console.log('id '+msgID);
+  say(text);
+  $.ajax({
+    url:"/postConvo",
+    data: {type:'wall',csrfmiddlewaretoken:getCookie('csrftoken'),
+    text:text},
+    dataType: "html",
+    type: "GET",
+    success:successConverse,
+    error:function(data){say('no');}
+
+});
+}
+
 
 function prepReply(event){
   say('Reply prepped.');
@@ -136,7 +162,7 @@ while (msgList.length){
   for (var i=0;i<msgList.length;i++){
    // console.log(msgList[i]);
     msg=msgList[i];
-    if (msg.parent==2){
+    if (msg.parent==0){
       //Root node
       msgTree.text=msg.text;
       msgTree.name=msg.name;
@@ -238,7 +264,7 @@ function drawMsgsTree(node){
   //Draws messages from tree structure
 
   //drawMsgsRec(node,ycount,xcount,0,0);
-  drawMsgsRec2(node,ycount,xcount,0);
+  drawMsgsRecLines(node,ycount,xcount,0);
 
   maxCol=0;
   xcount=startx;
@@ -247,67 +273,8 @@ function drawMsgsTree(node){
 
 //LL page drawing
 
-function drawMsgsRec2(node,x,y,depth){
-  var yFirstChild=0;
 
-  console.log('CALL x '+String(x)+' y '+String(y)+' '+String(depth));
-  for (var n=0;n<node.children.length;n++){
-    pos=drawMsgsRec2(node.children[n],x,y,depth+1);
-    x=pos[0];
-    y=pos[1];
-    depth=pos[2];
-    if (n==0){
-      //If at first node
-       yFirstChild=y;
-    }
-}
-  //Draw
 
-  console.log('y '+String(y)+' yfc '+String(yFirstChild) +' bary '+String(barY));
-  if (!node.children.length){
-    //We are at a leaf
-    var drawx=startx+depth*msgWidth;
-    var drawy=barY+dy;
-    if (node.id==-1){ 
-    var msg=$(floatreplyxy(drawx,drawy,node.replyTo,node.name,node.handle));
-    }else{
-    var msg=$(floatmsgxy(drawx,drawy,node.id,node.text,node.name,node.handle));
-  }
-    hConvoAddingTo.append(msg);
-    var mHeight=msg.height();
-    console.log('DRAW-LEAF x '+String(drawx)+' y '+String(drawy)+' t '+node.text+' d '+String(depth)+' h '+String(mHeight));
-    //Adjust bar  
-    var bottom=drawy+mHeight+2*msgBorder;
-    console.log('SETBARY from '+String(barY)+' to ' +String(bottom));
-    barY=bottom;
-  }
-  else
-  {//We are at an intermediate node
-    var drawx=startx+(depth*msgWidth);
-    var drawy=yFirstChild;
-    var msg=$(floatmsgxy(drawx,drawy,node.id,node.text,node.name,node.handle));
-    hConvoAddingTo.append(msg);
-    var mHeight=msg.height();
-    console.log('DRAW-INTE x '+String(drawx)+' y '+String(drawy)+' t '+node.text+' d '+String(depth)+' h '+String(mHeight)); 
-    var bottom=y+mHeight+2*msgBorder;
-    //Does the internode overflow the current barY?
-    if (bottom>barY){
-      console.log('SETBARY from '+String(barY)+' to ' +String(bottom));
-      barY=bottom;      
-    }
-  }
-  //Adjust height
-  //newHeight=callRow+msg.height()+dy;
-  console.log('bott '+String(bottom)+' mhbd '+String(maxHeightsByDepth[depth]) +' max '+String(Math.max(maxHeightsByDepth[depth],bottom)));
-  maxHeightsByDepth[depth]=Math.max(maxHeightsByDepth[depth],barY);
-  hConvoAddingTo.height(maxHeightsByDepth[depth]+convoHolderYBuffer);
-  //if (hConvoAddingTo.height()>maxHeightsByDepth[depth]){
-    //hConvoAddingTo.height(maxHeightsByDepth[depth]);
-  //}
-  depth=depth-1;
-  console.log('RETURN x '+String(x)+' y '+String(y)+' '+String(depth));
-  return [drawx,drawy,depth];
-}
 
 function drawReplyPrep(hConvo,id,x,y)
 {//REMEMBER the reply floatmsg contains the ID of the parent.

@@ -6,7 +6,7 @@ from django.template import RequestContext, loader,Context
 from f1_a1.models import Poll,WallPost,Person,Message,Conversation,GroupNode
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-from json import dumps
+from json import dumps,loads
 import logging
 
 log = logging.getLogger(__name__)
@@ -50,16 +50,42 @@ def wallpost(request):
 	wp.save()
 	return HttpResponseRedirect(reverse('f1_a1:wall', ))
 
+def news(request):
+	if request.user.is_authenticated():
+		me=Person.objects.get(uid=request.user.id)
+		template = loader.get_template('f1_a1/news.html')
+		context = RequestContext(request, {'me':me})
+		return HttpResponse(template.render(context))
+
 def groups(request):
 	me=Person.objects.get(uid=request.user.id)
 	template = loader.get_template('f1_a1/groups.html')
 	context = RequestContext(request, {'me':me})
 	return HttpResponse(template.render(context))
 
+
+def profiles(request):
+	if request.user.is_authenticated():
+		me=Person.objects.get(uid=request.user.id)
+		template = loader.get_template('f1_a1/profiles.html')
+		context = RequestContext(request, {'me':me})
+		return HttpResponse(template.render(context))
+
+def options(request):
+	if request.user.is_authenticated():
+		me=Person.objects.get(uid=request.user.id)
+		template = loader.get_template('f1_a1/options.html')
+		context = RequestContext(request, {'me':me})
+		return HttpResponse(template.render(context))
+
 def welcome(request):
-	me=Person.objects.get(uid=request.user.id)
+	
 	template = loader.get_template('f1_a1/welcome.html')
-	context = RequestContext(request, {'me':me})
+	if request.user.is_authenticated():
+		me=Person.objects.get(uid=request.user.id)
+		context = RequestContext(request, {'me':me})
+	else:
+		context = RequestContext(request, {})
 	return HttpResponse(template.render(context))
 
 
@@ -116,6 +142,29 @@ def message(request):
 
 #AJAX GET requests
 
+def addToGroup(request):
+	if request.user.is_authenticated():
+		g=GroupNode.objects.get(uid=request.user.id,groupName=request.GET['groupName'])
+		log.error(g)
+		jPeople=g.people
+		pPeople=loads(jPeople)
+		log.error('c '+str(pPeople)+str(type(pPeople)))
+		if pPeople==0:
+			log.error('NULL')
+			pPeople=[request.GET['handleToAdd']]
+		else:
+			pPeople.append(request.GET['handleToAdd'])
+		jPeople=dumps(pPeople)
+		g.people=jPeople
+		g.save()
+		return HttpResponse(1)
+
+def newGroup(request):
+	if request.user.is_authenticated():
+		g=GroupNode(uid=request.user.id,parentID=0,groupName=request.GET['groupName'],realGroup=True)
+		g.save()
+		return HttpResponse(1)
+
 def getGroups(request):
 	if request.user.is_authenticated():
 		#Get convos
@@ -123,15 +172,28 @@ def getGroups(request):
 		jGroups=[]
 		for g in groups:
 
-			jConvos.append(g)
+			jGroups.append({'person':g.person,'parentID':g.parentID,'realGroup':g.realGroup,'groupName':g.groupName})
 		#return HttpResponse(dumps(jGroups))
-		return HttpResponse(dumps('grouplist'))
+		return HttpResponse(dumps(jGroups))
+
+
+def getShortGroupList(request):
+	if request.user.is_authenticated():
+		#Get convos
+		groups=GroupNode.objects.filter(uid=request.user.id)	
+		jGroups=[]
+		for g in groups:
+			
+			if g.realGroup:
+				jGroups.append({'groupName':g.groupName})
+		#return HttpResponse(dumps(jGroups))
+		return HttpResponse(dumps(jGroups))
 
 
 def getMessagesByUID(request):
 	#GET request by Ajax
 	if request.user.is_authenticated():
-		uid=request.GET['personUID']
+		uid=request.user.id
 		#Get convos
 		convos=Conversation.objects.filter(uid=uid)	
 		jConvos=[]
@@ -147,6 +209,29 @@ def getMessagesByUID(request):
 	else:
 		return HttpResponse('This page has no messages.')
 
+def fetchGroupConvos(request):
+	#GET request by Ajax
+	if request.user.is_authenticated():
+		uid=request.user.id
+		#Get convos
+		group=GroupNode.objects.get(uid=uid,groupName=request.GET['groupHandle'])	
+		convos=loads(group.convoList)
+		if len(convos):
+			for c in convos:
+				messages=Message.objects.filter(convoID=c.id)
+				log.error(str(c.id)+'Posting message')
+				jMsgs=[]
+				for m in messages:
+					jMsgs.append({'text':m.text,'name':m.name,'id':m.id,
+						'handle':m.handle,'parent':m.parentID})
+				jConvos.append({'msgs':jMsgs,'convoID':c.id})
+			return HttpResponse(dumps(jConvos))
+		else:
+			return HttpResponse('This group has no convos.')
+
+	else:
+		return HttpResponse('Not authenticated')
+
 
 
 
@@ -161,7 +246,7 @@ def converse(request):
 		if len(text):
 			c=Conversation(uid=uid)
 			c.save()
-			replyTo(request,c.id,2)
+			replyTo(request,c.id,0)
 		return HttpResponse(c.id)
 
 def reply(request):
@@ -242,3 +327,17 @@ def post_old(request,convo):
 		
 	else:
 		return HttpResponse('Not authenticated.')
+
+def postConvo(request):
+	#return HttpResponse(request.GET.get('type'))
+	#When messages come into the server, we need to check a) authentication
+#b that they're not abusing.
+	log.error('Posting message')
+	if request.user.is_authenticated():
+		text=request.GET['text']
+		uid=request.user.id
+		if len(text):
+			c=Conversation(uid=uid)
+			c.save()
+			replyTo(request,c.id,0)
+		return HttpResponse(c.id)

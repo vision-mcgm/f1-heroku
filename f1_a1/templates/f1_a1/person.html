@@ -5,10 +5,17 @@
 <title>
 Person
 </title>
+<link rel="stylesheet" type="text/css" href="{% static "css/superfish.css" %} " />  
+
+<script src="{% static "js/superfish.js" %}"></script>
 <script src="{% static "js/dust-full-0.3.0.js" %}"></script>
 <script src="{% static "js/dust_person.js" %}" ></script>
+<script src="{% static "js/drawMsgsRecLines.js" %}"></script>
 <script src="{% static "js/convo.js" %}"></script>
+<script src="{% static "js/groupUtils.js" %}"></script>
 <script src="{% static "js/convoHTML.js" %}"></script>
+<script src="{% static "js/person.js" %}"></script>
+
 <script type="text/javascript">var gHandle="{{user.username}}"; var gCurrentPersonHandle="{{person.handle}}";
 	var gCurrentPersonUID="{{person.uid}}";</script>
 
@@ -16,6 +23,32 @@ Person
 {% endblock %}
 
 {% block central %}
+
+<div class="box">
+
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr>
+	<td>{{person.name}}</td>
+	<td align="right">	
+		<ul class="sf-menu" id="example" style="width:200px">
+				<li class="current">Add to ingroup
+				<ul id="inGAddList"><li style="width:200px">All</li></ul>
+			</li></ul>
+		</td>
+		<td align="right" width="210px">
+			<ul class="sf-menu" id="example" style="width:200px">
+				<li class="current">Add to outgroup
+				<ul><li style="width:200px">All</li></ul>
+			</li></ul>
+		</td></tr>
+
+		<tr>
+	<td>{{person.name}}<td><td></td>
+		<td align="right">
+			
+		</td></tr>
+	</table>
+	</div>
 <div class="box">
  <p>
  	Profile

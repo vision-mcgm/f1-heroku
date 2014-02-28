@@ -32,7 +32,7 @@ div.centredBox{
 
 div.box-top{
 	border:0px solid black;
-	
+	margin:10px;
 	padding:10px;
 	background-color: rgba(255, 255, 255, 0.5);
 	text-align:right;
@@ -71,12 +71,13 @@ div.box-message{
 }
 div.floatmsg{
 	border:0px solid gray;
-	width:200px;
+	max-width:200px;
 	margin:0px;	
 	padding:0px;
 	position:relative;
 	/*text-align:justify;
 	text-justify:inter-word;*/
+		word-wrap:break-word;
 }
 div.floatreplyOLD{
 	border:1px solid gray;
@@ -92,6 +93,20 @@ div.floatreplyOLD{
 	top:1px;
 }
 
+/*Links*/
+
+.vertLine{
+	border-left:1px solid black;
+	width:1px;
+	margin:0px;
+	padding:0px;
+}
+.horizLine{
+	border-top:1px solid black;
+	height:1px;
+	margin:0px;
+	padding:0px;
+}
 
 /*Misc*/
 

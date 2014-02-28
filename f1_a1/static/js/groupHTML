@@ -1,0 +1,12 @@
+
+  
+
+  //HTML generator functions
+
+
+function groupListEntry(jGroup){
+  return '<div class="groupListEntry"> jGroup.groupName </div>';
+}
+
+
+

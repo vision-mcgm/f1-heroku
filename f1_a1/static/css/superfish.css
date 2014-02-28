@@ -35,18 +35,18 @@
 /*** DEMO SKIN ***/
 .sf-menu {
 	
-	margin-bottom: 1em;
+	margin-bottom: 0em;
 }
 .sf-menu ul {
 	box-shadow: 2px 2px 6px rgba(0,0,0,.2);
-	min-width: 12em; /* allow long menu items to determine submenu width */
-	*width: 12em; /* no auto sub width for IE7, see white-space comment below */
+	min-width: 200px; /* allow long menu items to determine submenu width */
+	*width: 200px; /* no auto sub width for IE7, see white-space comment below */
 }
 .sf-menu a {
 	border-left: 1px solid #fff;
 	border-top: 1px solid #dFeEFF; /* fallback colour must use full shorthand */
 	border-top: 1px solid rgba(255,255,255,.5);
-	padding: .75em 1em;
+	padding: 1em 1em;
 	text-decoration: none;
 	zoom: 1; /* IE7 */
 }
@@ -54,21 +54,21 @@
 	color: #13a;
 }
 .sf-menu li {
-	background: #BDD2FF;
+	background: #F99157;
 	white-space: nowrap; /* no need for Supersubs plugin */
 	*white-space: normal; /* ...unless you support IE7 (let it wrap) */
 	-webkit-transition: background .2s;
 	transition: background .2s;
 }
 .sf-menu ul li {
-	background: #AABDE6;
+	background: #F99157;
 }
 .sf-menu ul ul li {
-	background: #9AAEDB;
+	background: #F99157;
 }
 .sf-menu li:hover,
 .sf-menu li.sfHover {
-	background: #CFDEFF;
+	background: #D14F08;
 	/* only transition out, not in */
 	-webkit-transition: none;
 	transition: none;
